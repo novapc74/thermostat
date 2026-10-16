@@ -29,7 +29,8 @@ const int   ALARM_PULSES_IN_SERIES = 4;  // Количество пиков в �
 const int   ALARM_MAX_SERIES  = 5;      // Всего 5 серий звука
 
 // --- НАСТРОЙКА МИГАНИЯ ДИСПЛЕЯ ---
-const int   BLINK_PERIOD_SET  = 400;     // ИСПРАВЛЕНО: Полный период мигания цифр в меню SET (мс)
+const int   BLINK_PERIOD_SET  = 600;     // ИСПРАВЛЕНО: Полный период мигания цифр в меню SET (мс)
+const int   TIMEOUT_MENU_EXIT = 4000;
 
 // Коэффициенты ПИД-регулятора мощности ТЭНа 2кВт
 const float PID_KP = 4.5;    

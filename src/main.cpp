@@ -130,7 +130,7 @@ if (heaterPID.pidOutput == 0) {
 
 
   // --- АВТОМАТИЧЕСКИЙ ВЫХОД ИЗ МЕНЮ НАСТРОЕК ---
-  if ((currentMode == MODE_SET_TEMP || currentMode == MODE_SET_TIME) && (currentMillis - lastInactivityTime >= 2000)) {
+  if ((currentMode == MODE_SET_TEMP || currentMode == MODE_SET_TIME) && (currentMillis - lastInactivityTime >= TIMEOUT_MENU_EXIT)) {
     saveSettings();
     currentMode = MODE_TEMP;   
   }
