@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "author": "Makarov Vyacheslav (Smart Component Pins Layout)",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "wokwi-arduino-nano", "id": "nano", "top": 0, "left": 0, "attrs": {} },
+    {
+      "type": "wokwi-tm1637-7segment",
+      "id": "mydisplay",
+      "top": -249.64,
+      "left": -136.97,
+      "attrs": { "color": "red" }
+    },
+    { "type": "wokwi-buzzer", "id": "buzzer", "top": 12, "left": -94.2, "attrs": {} },
+    {
+      "type": "wokwi-led",
+      "id": "led_blink",
+      "top": -13.2,
+      "left": 186.2,
+      "attrs": { "color": "limegreen", "label": "PID Dot" }
+    },
+    {
+      "type": "wokwi-led",
+      "id": "led_triac",
+      "top": 44.4,
+      "left": 186.2,
+      "attrs": { "color": "red", "label": "HEATER" }
+    },
+    {
+      "type": "wokwi-potentiometer",
+      "id": "pot_thermo",
+      "top": -222.1,
+      "left": 163,
+      "attrs": { "label": "Temp Sensor" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_plus",
+      "top": -128.2,
+      "left": -33.6,
+      "attrs": { "color": "green", "label": "+" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_minus",
+      "top": -61,
+      "left": -28.8,
+      "attrs": { "color": "red", "label": "-" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_set",
+      "top": -128.2,
+      "left": 153.6,
+      "attrs": { "color": "blue", "label": "SET" }
+    },
+    {
+      "type": "wokwi-pushbutton",
+      "id": "btn_start",
+      "top": -61,
+      "left": 153.6,
+      "attrs": { "color": "white", "label": "START" }
+    }
+  ],
+  "connections": [
+    [ "led_blink:A", "nano:2", "green", [] ],
+    [ "led_blink:C", "nano:GND.2", "black", [] ],
+    [ "led_triac:A", "nano:3", "red", [] ],
+    [ "led_triac:C", "nano:GND.2", "black", [] ],
+    [ "mydisplay:GND", "nano:GND.1", "black", [] ],
+    [ "mydisplay:VCC", "nano:5V", "red", [] ],
+    [ "mydisplay:DIO", "nano:8", "blue", [] ],
+    [ "mydisplay:CLK", "nano:7", "yellow", [] ],
+    [ "pot_thermo:GND", "nano:GND.1", "black", [] ],
+    [ "pot_thermo:VCC", "nano:5V", "red", [] ],
+    [ "pot_thermo:SIG", "nano:A0", "purple", [] ],
+    [ "btn_plus:2.r", "nano:4", "darkgreen", [] ],
+    [ "btn_plus:1.r", "nano:GND.2", "black", [] ],
+    [ "btn_minus:2.r", "nano:5", "orange", [] ],
+    [ "btn_minus:1.r", "nano:GND.2", "black", [] ],
+    [ "btn_set:2.l", "nano:6", "cyan", [] ],
+    [ "btn_set:1.l", "nano:GND.2", "black", [] ],
+    [ "btn_start:2.l", "nano:A1", "magenta", [] ],
+    [ "btn_start:1.l", "nano:GND.2", "black", [] ],
+    [ "buzzer:2", "nano:9", "darkred", [] ],
+    [ "buzzer:1", "nano:GND.1", "black", [] ]
+  ],
+  "dependencies": {}
+}
