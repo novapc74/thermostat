@@ -43,6 +43,7 @@ unsigned long timerPidDot = 0;
 bool pidDotState = false;           
 
 void setup() {
+  Serial.begin(9600); // логирование
   myDisplay.init();
   heaterPID.init();
   thermo.init();       
@@ -129,11 +130,19 @@ if (heaterPID.pidOutput == 0) {
   }
 
 
-  // --- АВТОМАТИЧЕСКИЙ ВЫХОД ИЗ МЕНЮ НАСТРОЕК ---
-  if ((currentMode == MODE_SET_TEMP || currentMode == MODE_SET_TIME) && (currentMillis - lastInactivityTime >= TIMEOUT_MENU_EXIT)) {
+// --- АВТОМАТИЧЕСКИЙ ВЫХОД ИЗ МЕНЮ НАСТРОЕК ---
+if (currentMode == MODE_SET_TEMP || currentMode == MODE_SET_TIME) {
+
+  // ВЫВОД В ПОРТ: покажет текущую разницу в миллисекундах
+  Serial.print("Прошло времени: ");
+  Serial.println(currentMillis - lastInactivityTime);
+
+  if (currentMillis - lastInactivityTime >= TIMEOUT_MENU_EXIT) {
     saveSettings();
     currentMode = MODE_TEMP;   
   }
+}
+
 
   // --- ЛОГИКА КНОПКИ START/STOP ---
   bool btnStartPressed = (digitalRead(PIN_BTN_START) == LOW);
@@ -182,17 +191,25 @@ if (heaterPID.pidOutput == 0) {
     ButtonResult pRes = btnPlus.checkState();
     ButtonResult mRes = btnMinus.checkState();
 
+    // Запоминаем старые значения перед опросом кнопок
+    int prevTemp = setTemp;
+    long prevTime = defaultTimerSeconds;
+
     if (pRes != BTN_NONE) {
-      lastInactivityTime = currentMillis;
       if (currentMode == MODE_SET_TEMP && setTemp < LIMIT_MAX_TEMP) setTemp++;
       if (currentMode == MODE_SET_TIME && defaultTimerSeconds < LIMIT_MAX_TIME) { defaultTimerSeconds++; timerSeconds = defaultTimerSeconds; }
     }
     if (mRes != BTN_NONE) {
-      lastInactivityTime = currentMillis;
       if (currentMode == MODE_SET_TEMP && setTemp > LIMIT_MIN_TEMP) setTemp--;
       if (currentMode == MODE_SET_TIME && defaultTimerSeconds > LIMIT_MIN_TIME) { defaultTimerSeconds--; timerSeconds = defaultTimerSeconds; }
     }
+
+    // ИСПРАВЛЕНО: Таймер сбрасывается ТОЛЬКО если цифры на экране действительно изменились!
+    if (setTemp != prevTemp || defaultTimerSeconds != prevTime) {
+      lastInactivityTime = currentMillis;
+    }
   }
+
 
   // ИСПРАВЛЕНО: Теперь полупериод рассчитывается динамически на основе константы BLINK_PERIOD_SET из файла Config.h
   if (currentMillis - timerBlink >= (unsigned long)(BLINK_PERIOD_SET / 2)) { 
