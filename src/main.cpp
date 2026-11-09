@@ -43,7 +43,6 @@ unsigned long timerPidDot = 0;
 bool pidDotState = false;           
 
 void setup() {
-  Serial.begin(9600); // логирование
   myDisplay.init();
   heaterPID.init();
   thermo.init();       
@@ -130,19 +129,13 @@ if (heaterPID.pidOutput == 0) {
   }
 
 
-// --- АВТОМАТИЧЕСКИЙ ВЫХОД ИЗ МЕНЮ НАСТРОЕК ---
-if (currentMode == MODE_SET_TEMP || currentMode == MODE_SET_TIME) {
-
-  // ВЫВОД В ПОРТ: покажет текущую разницу в миллисекундах
-  Serial.print("Прошло времени: ");
-  Serial.println(currentMillis - lastInactivityTime);
-
-  if (currentMillis - lastInactivityTime >= TIMEOUT_MENU_EXIT) {
-    saveSettings();
-    currentMode = MODE_TEMP;   
+  // --- АВТОМАТИЧЕСКИЙ ВЫХОД ИЗ МЕНЮ НАСТРОЕК ---
+  if (currentMode == MODE_SET_TEMP || currentMode == MODE_SET_TIME) {
+    if (currentMillis - lastInactivityTime >= TIMEOUT_MENU_EXIT) {
+      saveSettings();
+      currentMode = MODE_TEMP;   
+    }
   }
-}
-
 
   // --- ЛОГИКА КНОПКИ START/STOP ---
   bool btnStartPressed = (digitalRead(PIN_BTN_START) == LOW);
